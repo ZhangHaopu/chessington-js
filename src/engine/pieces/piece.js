@@ -24,6 +24,45 @@ export default class Piece {
         return inside
     }
 
+    createMovesArray(board, possibleDir) {
+        let currentSquare = board.findPiece(this);
+        let availableMoves = []
+        possibleDir.forEach(dir => {
+            let row = currentSquare.row + dir[0];
+            let col = currentSquare.col + dir[1];
+            if (this.inBoundary(row, col)) {
+                if (board.getPiece(Square.at(row, col)) === undefined) {
+                    availableMoves.push(Square.at(row, col))
+                }
+                else if (board.getPiece(Square.at(row, col)).player !== this.player
+                && board.getPiece(Square.at(row, col)).name !== PieceName.KING){
+                    availableMoves.push(Square.at(row, col))
+                }
+            }
+        })
+        return availableMoves;
+    }
+    createMovesArrayNew(board, possibleDir) {
+        let currentSquare = board.findPiece(this);
+        let availableMoves = possibleDir.map(dir => {
+            let row = currentSquare.row + dir[0];
+            let col = currentSquare.col + dir[1];
+            return Square.at(row, col);
+        })
+            .filter(({row, col}) => {
+                return this.inBoundary(row, col)
+            })
+            .filter(square => {
+                return (board.getPiece(square) === undefined
+                    ||
+                    (board.getPiece(square).player !== this.player
+                        && board.getPiece(square).name !== PieceName.KING)
+                )
+            })
+
+        return availableMoves;
+    }
+
     createAvailableMoves(board, rowDir, colDir) {
         let currentSquare = board.findPiece(this);
         let availableMoves = []
