@@ -1,10 +1,12 @@
 import Piece from './piece';
 import Square from "../square";
 import Player from "../player";
+import PieceName from "../pieceName";
 
 export default class Pawn extends Piece {
     constructor(player) {
         super(player);
+        this.name = PieceName.PAWN
     }
 
     getAvailableMoves(board) {

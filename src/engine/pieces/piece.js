@@ -1,5 +1,6 @@
 import Square from "../square";
 import square from "../square";
+import PieceName from "../pieceName";
 
 export default class Piece {
     constructor(player) {
@@ -29,32 +30,59 @@ export default class Piece {
         for (let i = 1; i < 8; i++) {
             // Move horizontal right
             let column = i + currentSquare.col;
-            if (column > 7 || board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
-                break
+            if (column > 7) {
+                break;
             }
+            if (board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
+                if (board.getPiece(Square.at(currentSquare.row, column)).player !== this.player){
+                    if (board.getPiece(Square.at(currentSquare.row, column)).name !== PieceName.KING) {
+                        availableMoves.push(Square.at(currentSquare.row, column));
+                    }
+                }
+                break;
+            }
+
             availableMoves.push(Square.at(currentSquare.row, column))
         }
         for (let i = 1; i < 8; i++) {
             // Move horizontal left
             let column = currentSquare.col - i;
-            if (column < 0 || board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
-                break
+            if (column < 0) {
+                break;
+            }
+            if (board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
+                if (board.getPiece(Square.at(currentSquare.row, column)).player !== this.player){
+                    availableMoves.push(Square.at(currentSquare.row, column));
+                }
+                break;
             }
             availableMoves.push(Square.at(currentSquare.row, column))
         }
         for (let i = 1; i < 8; i++) {
             // Move vertically up
             let row = i + currentSquare.row;
-            if (row > 7 || board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
-                break
+            if (row > 7) {
+                break;
+            }
+            if (board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
+                if (board.getPiece(Square.at(row, currentSquare.col)).player !== this.player){
+                    availableMoves.push(Square.at(row, currentSquare.col));
+                }
+                break;
             }
             availableMoves.push(Square.at(row, currentSquare.col))
         }
         for (let i = 1; i < 8; i++) {
             // Move vertically down
             let row = currentSquare.row - i;
-            if (row < 0 || board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
+            if (row < 0) {
                 break
+            }
+            if (board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
+                if (board.getPiece(Square.at(row, currentSquare.col)).player !== this.player){
+                    availableMoves.push(Square.at(row, currentSquare.col));
+                }
+                break;
             }
             availableMoves.push(Square.at(row, currentSquare.col))
         }
