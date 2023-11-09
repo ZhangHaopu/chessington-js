@@ -13,39 +13,34 @@ export default class Pawn extends Piece {
         let currentSquare = board.findPiece(this);
         let dir = 1;
         let superMove = false;
+        let row = currentSquare.row;
+        let col = currentSquare.col;
+        let availableMoves = [];
         if (this.player === Player.BLACK) {
-            dir = -1
-            if (currentSquare.row === 0){
+            if (row === 0){
                 return []
             }
-            if (currentSquare.row === 6){
-                superMove = true;
+            if (row === 6){
+                if(board.getPiece(Square.at(4, col)) === undefined && board.getPiece(Square.at(5, col)) === undefined) {
+                    availableMoves.push(Square.at(4, col))
+                }
+            }
+            if(board.getPiece(Square.at(row - 1, col)) === undefined) {
+                availableMoves.push(Square.at(row -1, col))
             }
         }
-        else {
-            if (currentSquare.row === 7){
+        if (this.player === Player.WHITE) {
+            if (row === 7){
                 return []
             }
-            if (currentSquare.row === 1){
-                superMove = true;
+            if (row === 1){
+                if(board.getPiece(Square.at(3, col)) === undefined && board.getPiece(Square.at(2, col)) === undefined) {
+                    availableMoves.push(Square.at(3, col))
+                }
             }
-        }
-        let availableMove = Square.at(currentSquare.row + dir, currentSquare.col)
-        let availableMoves = [availableMove]
-        if (board.getPiece(availableMove)!== undefined) {
-            return [];
-        }
-        if (superMove) {
-            availableMoves.push(Square.at(currentSquare.row + dir * 2, currentSquare.col))
-        }
-        let invalidMoves = []
-        for (let p = availableMoves.length -1; p >= 0; p--) {
-            if ( board.getPiece(availableMoves[p])!== undefined) {
-                invalidMoves.push(p)
+            if(board.getPiece(Square.at(row + 1, col)) === undefined) {
+                availableMoves.push(Square.at(row +1, col))
             }
-        }
-        for (let p = 0; p < invalidMoves.length; p++){
-            delete availableMoves[invalidMoves[p]]
         }
         return availableMoves;
     }

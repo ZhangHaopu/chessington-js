@@ -24,106 +24,44 @@ export default class Piece {
         return inside
     }
 
-    moveLateral(board){
+    createAvailableMoves(board, rowDir, colDir) {
         let currentSquare = board.findPiece(this);
         let availableMoves = []
         for (let i = 1; i < 8; i++) {
             // Move horizontal right
-            let column = i + currentSquare.col;
-            if (column > 7) {
+            let row = i * rowDir + currentSquare.row;
+            let column = i * colDir + currentSquare.col;
+            if (!this.inBoundary(row,column)) {
                 break;
             }
-            if (board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
-                if (board.getPiece(Square.at(currentSquare.row, column)).player !== this.player){
-                    if (board.getPiece(Square.at(currentSquare.row, column)).name !== PieceName.KING) {
-                        availableMoves.push(Square.at(currentSquare.row, column));
+            if (board.getPiece(Square.at(row, column)) !== undefined) {
+                if (board.getPiece(Square.at(row, column)).player !== this.player){
+                    if (board.getPiece(Square.at(row, column)).name !== PieceName.KING) {
+                        availableMoves.push(Square.at(row, column));
                     }
                 }
                 break;
             }
+            availableMoves.push(Square.at(row, column))
+        }
+        return availableMoves
+    }
 
-            availableMoves.push(Square.at(currentSquare.row, column))
-        }
-        for (let i = 1; i < 8; i++) {
-            // Move horizontal left
-            let column = currentSquare.col - i;
-            if (column < 0) {
-                break;
-            }
-            if (board.getPiece(Square.at(currentSquare.row, column)) !== undefined) {
-                if (board.getPiece(Square.at(currentSquare.row, column)).player !== this.player){
-                    availableMoves.push(Square.at(currentSquare.row, column));
-                }
-                break;
-            }
-            availableMoves.push(Square.at(currentSquare.row, column))
-        }
-        for (let i = 1; i < 8; i++) {
-            // Move vertically up
-            let row = i + currentSquare.row;
-            if (row > 7) {
-                break;
-            }
-            if (board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
-                if (board.getPiece(Square.at(row, currentSquare.col)).player !== this.player){
-                    availableMoves.push(Square.at(row, currentSquare.col));
-                }
-                break;
-            }
-            availableMoves.push(Square.at(row, currentSquare.col))
-        }
-        for (let i = 1; i < 8; i++) {
-            // Move vertically down
-            let row = currentSquare.row - i;
-            if (row < 0) {
-                break
-            }
-            if (board.getPiece(Square.at(row, currentSquare.col)) !== undefined) {
-                if (board.getPiece(Square.at(row, currentSquare.col)).player !== this.player){
-                    availableMoves.push(Square.at(row, currentSquare.col));
-                }
-                break;
-            }
-            availableMoves.push(Square.at(row, currentSquare.col))
-        }
+    moveLateral(board){
+        let rightMoves = this.createAvailableMoves(board, 1,0);
+        let leftMoves = this.createAvailableMoves(board,-1, 0);
+        let upMoves = this.createAvailableMoves(board, 0, 1);
+        let downMoves = this.createAvailableMoves(board, 0, -1);
+        let availableMoves = rightMoves.concat(leftMoves, upMoves, downMoves);
         return availableMoves;
     }
 
     moveDiagonal(board){
-        let currentSquare = board.findPiece(this);
-        let availableMoves = []
-        for (let i = 1; i < 8; i++) {
-            let column = currentSquare.col + i;
-            let row = currentSquare.row + i;
-            if (!this.inBoundary(row, column) || board.getPiece(Square.at(row, column)) !== undefined) {
-                break
-            }
-            availableMoves.push(Square.at(row, column))
-        }
-        for (let i = 1; i < 8; i++) {
-            let column = currentSquare.col + i;
-            let row = currentSquare.row - i;
-            if (!this.inBoundary(row, column) || board.getPiece(Square.at(row, column)) !== undefined) {
-                break
-            }
-            availableMoves.push(Square.at(row, column))
-        }
-        for (let i = 1; i < 8; i++) {
-            let column = currentSquare.col - i;
-            let row = currentSquare.row + i;
-            if (!this.inBoundary(row,column) || board.getPiece(Square.at(row, column)) !== undefined) {
-                break
-            }
-            availableMoves.push(Square.at(row, column))
-        }
-        for (let i = 1; i < 8; i++) {
-            let column = currentSquare.col - i;
-            let row = currentSquare.row - i;
-            if (!this.inBoundary(row, column) || board.getPiece(Square.at(row, column)) !== undefined) {
-                break
-            }
-            availableMoves.push(Square.at(row, column))
-        }
+        let upRightMoves = this.createAvailableMoves(board, 1,1);
+        let upLeftMoves = this.createAvailableMoves(board,-1, 1);
+        let downLeftMoves = this.createAvailableMoves(board, -1, -1);
+        let downRightMoves = this.createAvailableMoves(board, 1, -1);
+        let availableMoves = upRightMoves.concat(upLeftMoves, downLeftMoves, downRightMoves);
         return availableMoves;
     }
 

@@ -11,12 +11,14 @@ export default class Knight extends Piece {
     getAvailableMoves(board) {
         let currentSquare = board.findPiece(this);
         let availableMoves = []
-        let possibledir = [[1,2], [-1,-2], [1, -2], [-1,2], [2,1], [2, -1], [-2, 1], [-2, -1]]
-        for (let i = 0; i < 8; i++){
-            if (currentSquare.row + possibledir[i][0] < 8 && currentSquare.col + possibledir[i][1] < 8 && currentSquare.row + possibledir[i][0] >= 0 && currentSquare.col + possibledir[i][1] >= 0){
-                availableMoves.push(Square.at(currentSquare.row + possibledir[i][0], currentSquare.col + possibledir[i][1]))
+        let possibleDir = [[1,2], [-1,-2], [1, -2], [-1,2], [2,1], [2, -1], [-2, 1], [-2, -1]]
+        possibleDir.forEach(dir => {
+            let row = currentSquare.row + dir[0];
+            let col = currentSquare.col + dir[1];
+            if (this.inBoundary(row, col)) {
+                availableMoves.push(Square.at(row, col))
             }
-        }
+        })
         return availableMoves;
     }
 }
