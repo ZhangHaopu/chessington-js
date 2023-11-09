@@ -10,7 +10,7 @@ export default class King extends Piece {
 
     getAvailableMoves(board) {
         let possibleDir = [[1,1], [-1,-1], [1, -1], [-1,1], [0,1], [0, -1], [1, 0], [-1, 0]]
-        let availableMoves = this.createMovesArray(board, possibleDir)
+        let availableMoves = this.createMovesArrayNew(board, possibleDir)
         return availableMoves;
     }
 }
