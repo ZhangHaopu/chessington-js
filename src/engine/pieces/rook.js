@@ -7,16 +7,7 @@ export default class Rook extends Piece {
     }
 
     getAvailableMoves(board) {
-        let currentSquare = board.findPiece(this);
-        let availableMoves = []
-        for (let i = 0; i < 8; i++){
-            if (i !== currentSquare.col) {
-                availableMoves.push(Square.at(currentSquare.row, i))
-            }
-            if (i !== currentSquare.row) {
-                availableMoves.push(Square.at(i, currentSquare.col))
-            }
-        }
+        let availableMoves = this.moveLateral(board)
         return availableMoves;
     }
 }

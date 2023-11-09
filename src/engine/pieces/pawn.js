@@ -13,11 +13,17 @@ export default class Pawn extends Piece {
         let superMove = false;
         if (this.player === Player.BLACK) {
             dir = -1
+            if (currentSquare.row === 0){
+                return []
+            }
             if (currentSquare.row === 6){
                 superMove = true;
             }
         }
         else {
+            if (currentSquare.row === 7){
+                return []
+            }
             if (currentSquare.row === 1){
                 superMove = true;
             }
@@ -39,6 +45,6 @@ export default class Pawn extends Piece {
         for (let p = 0; p < invalidMoves.length; p++){
             delete availableMoves[invalidMoves[p]]
         }
-            return availableMoves;
+        return availableMoves;
     }
 }
