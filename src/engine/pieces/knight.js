@@ -9,16 +9,8 @@ export default class Knight extends Piece {
     }
 
     getAvailableMoves(board) {
-        let currentSquare = board.findPiece(this);
-        let availableMoves = []
         let possibleDir = [[1,2], [-1,-2], [1, -2], [-1,2], [2,1], [2, -1], [-2, 1], [-2, -1]]
-        possibleDir.forEach(dir => {
-            let row = currentSquare.row + dir[0];
-            let col = currentSquare.col + dir[1];
-            if (this.inBoundary(row, col)) {
-                availableMoves.push(Square.at(row, col))
-            }
-        })
+        let availableMoves = this.createMovesArray(board, possibleDir)
         return availableMoves;
     }
 }
